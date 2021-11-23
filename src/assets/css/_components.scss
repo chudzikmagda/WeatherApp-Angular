@@ -1,0 +1,32 @@
+.content {
+	width: 100%;
+
+	@include desktopUp {
+		max-width: 762px;
+		padding-right: 1rem;
+	}
+}
+
+.hero {
+	position: relative;
+	height: 45%;
+	width: 100%;
+
+	@include desktopUp {
+		width: 50%;
+		height: 100%;
+	}
+
+	&__img {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		max-height: 100%;
+		width: auto;
+
+		@include desktopUp {
+			max-height: 100%;
+			max-width: 100%;
+		}
+	}
+}

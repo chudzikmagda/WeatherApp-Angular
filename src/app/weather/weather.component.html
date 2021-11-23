@@ -1,0 +1,76 @@
+<section class="section section--welcome">
+	<div class="col col--form">
+		<main class="content">
+			<h1 class="content__heading">Czy wiesz jaka jest pogoda?</h1>
+			<h6 class="content__description">Wpisz miejscowość i sprawdź pogodę</h6>
+			<form class="form">
+				<input type="text" class="form__input" placeholder="Podaj miejscowość" [(ngModel)]="cityName" name="city">
+				<button class="form__btn"
+                    data-target="weather"
+                    (click)="startApp($event)"
+                    (keydown.enter)="startApp($event)">
+					<img src="../../assets/images/icon-search.svg" alt="Search">
+				</button>
+				<div [class]="errorShowClass">{{ error }}</div>
+			</form>
+		</main>
+	</div>
+	<picture class="hero">
+		<img src="../../assets/images/hero-image.webp" alt="" class="hero__img">
+	</picture>
+</section>
+
+<section [class]="sectionWithDataClass" id="currentWeatherSection">
+	<div class="col col--weather">
+		<div class="city">
+			<h2 class="city__name">{{showCityName | titlecase }}</h2>
+			<div class="sun">
+				<img src="../../assets/images/sunrise.svg" alt="" class="sun__icon">
+				<ul class="sun__items">
+					<li class="sun__item">Wschód słońca: <time class="sun__sunrise">{{currentWeather?.sunrise }}</time></li>
+					<li class="sun__item">Zachód słońca: <time class="sun__sunset">{{currentWeather?.sunset }}</time></li>
+				</ul>
+			</div>
+		</div>
+		<h3 class="uppercase heading">Teraz</h3>
+		<div class="box">
+			<div class="col">
+				<img [src]="currentWeather?.icon" alt="" class="current-weather__icon">
+				<span class="current-weather__name uppercase">{{currentWeather?.description }}</span>
+				<span class="current-weather__temp">
+					{{currentWeather?.tempreture | number:'1.0-1' }}
+				</span>
+			</div>
+			<div class="col">
+			   	<div class="current-weather">
+					<ul class="current-weather__items">
+						<li class="current-weather__item">Temperatura odczuwalna: <span class="current-weather__feels-like">{{currentWeather?.perceivedTempreture | number:'1.0-1' }}</span><sup> o</sup>C</li>
+						<li class="current-weather__item">Ciśnienie: <span class="current-weather__pressure">{{currentWeather?.pressure | number:'1.0-0' }}</span> hPa</li>
+						<li class="current-weather__item">Wilgotność powietrza: <span class="current-weather__humidity">{{currentWeather?.humidity | number:'1.0-1' }}</span> %</li>
+						<li class="current-weather__item">Widoczność: <span class="current-weather__visibility">{{currentWeather?.visibility | number:'1.0-1' }}</span> km</li>
+						<li class="current-weather__item">Wiatr: <span class="current-weather__wind-speed">{{ currentWeather?.windSpeed | number:'1.0-1' }}</span> km/h</li>
+					</ul>
+			   	</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col city-image"></div>
+
+	<h3 class="uppercase heading heading--forecast">Prognoza pogody 16-dniowa</h3>
+
+	<div class="forecast" *ngFor="let item of forecastWeather.data">
+		<span class="forecast__date">{{ item?.datetime }}</span>
+		<img class="forecast__icon" src="{{iconsURL}}{{item.weather.icon}}.svg">
+		<span class="forecast__name">{{ item?.weather.description }}</span>
+		<span class="forecast__temp">{{ item?.temp }} <sup>o</sup>C</span>
+	</div>
+
+	<div class="cta" (click)="scrollToTop()">
+		<span class="cta__copy">
+			Sprawdź dla innego miasta
+		</span>
+		<img src="../../assets/images/arrow.svg" alt="" class="cta__icon">
+	</div>
+
+</section>

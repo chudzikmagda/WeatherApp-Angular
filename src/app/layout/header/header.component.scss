@@ -1,0 +1,42 @@
+@import '../../../assets/css/reset';
+@import '../../../assets/css/variables';
+@import '../../../assets/css/mixins';
+
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  @include flex($flexDirection:row);
+  padding: 0 1rem;
+  height: $navHeightMobile;
+  color: $primaryColor;
+  z-index: 1;
+
+  @include desktopUp {
+    justify-content: start;
+    height: $navHeightDesktop;
+    padding: 0 3rem;
+    font-size: 1rem;
+    letter-spacing: 2px;
+  }
+
+  &__name {
+    text-transform: uppercase;
+    padding-left: 1rem;
+    letter-spacing: 1px;
+    font-size: 0.85rem;
+
+    @include desktopUp {
+      font-size: 1rem;
+    }
+  }
+
+  &__logotype {
+    height: 40%;
+
+    @include desktopUp {
+      height: auto;
+    }
+  }
+}
