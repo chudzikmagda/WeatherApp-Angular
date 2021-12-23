@@ -4,13 +4,27 @@
 			<h1 class="content__heading">Czy wiesz jaka jest pogoda?</h1>
 			<h6 class="content__description">Wpisz miejscowość i sprawdź pogodę</h6>
 			<form class="form">
-				<input type="text" class="form__input" placeholder="Podaj miejscowość" [(ngModel)]="cityName" name="city">
+				<input type="text" class="form__input" placeholder="Podaj miejscowość" [(ngModel)]="location.city" name="city">
 				<button class="form__btn"
                     data-target="weather"
-                    (click)="startApp($event)"
-                    (keydown.enter)="startApp($event)">
+                    (click)="startApp('inputBtn')"
+                    (keydown.enter)="startApp('enter')">
 					<img src="../../assets/images/icon-search.svg" alt="Search">
 				</button>
+				<div class="geolocation">
+					<button class="geolocation__btn" (click)="startApp('geolocation')">
+						<svg xmlns="http://www.w3.org/2000/svg" class="form__icon" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" fill="none" stroke-linecap="round" stroke-linejoin="round">
+						<path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+						<circle cx="12" cy="12" r="3" />
+						<circle cx="12" cy="12" r="8" />
+						<line x1="12" y1="2" x2="12" y2="4" />
+						<line x1="12" y1="20" x2="12" y2="22" />
+						<line x1="20" y1="12" x2="22" y2="12" />
+						<line x1="2" y1="12" x2="4" y2="12" />
+						</svg>
+						Zlokalizuj mnie
+					</button>
+				</div>
 				<div [class]="errorShowClass">{{ error }}</div>
 			</form>
 		</main>
@@ -23,12 +37,20 @@
 <section [class]="sectionWithDataClass" id="currentWeatherSection">
 	<div class="col col--weather">
 		<div class="city">
-			<h2 class="city__name">{{showCityName | titlecase }}</h2>
+			<ng-container *ngIf="target === 'inputBtn'">
+				<h2 class="city__name">{{ location.city | titlecase }}</h2>
+			</ng-container>
+			<ng-container *ngIf="target === 'geolocation'">
+				<h2 class="city__name">
+					φ:  {{ location.latitude | number:'1.1-3' }} <br>
+					λ:  {{ location.longitude | number:'1.1-3' }}
+				</h2>
+			</ng-container>
 			<div class="sun">
 				<img src="../../assets/images/sunrise.svg" alt="" class="sun__icon">
 				<ul class="sun__items">
-					<li class="sun__item">Wschód słońca: <time class="sun__sunrise">{{currentWeather?.sunrise }}</time></li>
-					<li class="sun__item">Zachód słońca: <time class="sun__sunset">{{currentWeather?.sunset }}</time></li>
+					<li class="sun__item">Wschód słońca: <time class="sun__sunrise">{{ currentWeather?.sunrise }}</time></li>
+					<li class="sun__item">Zachód słońca: <time class="sun__sunset">{{ currentWeather?.sunset }}</time></li>
 				</ul>
 			</div>
 		</div>
@@ -38,7 +60,7 @@
 				<img [src]="currentWeather?.icon" alt="" class="current-weather__icon">
 				<span class="current-weather__name uppercase">{{currentWeather?.description }}</span>
 				<span class="current-weather__temp">
-					{{currentWeather?.tempreture | number:'1.0-1' }}
+					{{currentWeather?.tempreture | number:'1.0-1' }} <sup> o</sup>C
 				</span>
 			</div>
 			<div class="col">

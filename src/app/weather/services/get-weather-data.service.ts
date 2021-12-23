@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CurrentWeatherAPI } from '../interfaces/current-weather-api';
-import { ForecastWeatherAPI } from '../interfaces/forecast-weather-api'
+import { ForecastWeatherAPI } from '../interfaces/forecast-weather-api';
+import { Location } from '../interfaces/location';
 
 @Injectable({
 	providedIn: 'root'
@@ -12,13 +13,17 @@ export class GetWeatherData {
 
 	constructor(private http: HttpClient) { }
 
-	getCurrentWeatherData(cityName: string) {
+	getCurrentWeatherData(location: Location, target?: string) {
 		return this.http
-			.get<any>(`${this.apiUrl}current?&city=${cityName}&key=${this.apiKey}&lang=pl`)
+			.get<CurrentWeatherAPI>(
+				`${this.apiUrl}current?${(target === 'inputBtn' || target === 'enter') ? ('city=' + location.city) : ('&lat=' + location.latitude + '&lon=' + location.longitude)}&key=${this.apiKey}&lang=pl`
+			)
 	}
 
-	getForecastWeatherData(cityName: string) {
+	getForecastWeatherData(location: Location, target?: string) {
 		return this.http
-			.get<ForecastWeatherAPI>(`${this.apiUrl}forecast/daily?&city=${cityName}&key=${this.apiKey}&lang=pl`)
+			.get<ForecastWeatherAPI>(
+				`${this.apiUrl}forecast/daily?${(target === 'inputBtn' || target === 'enter') ? ('city=' + location.city) : ('&lat=' + location.latitude + '&lon=' + location.longitude)}&key=${this.apiKey}&lang=pl`
+			)
 	}
 };

@@ -187,6 +187,27 @@
 	}
 }
 
+.geolocation {
+	&__btn {
+		@include flex($flexDirection:row, $justifyContent:flex-start);
+		padding-top: 1rem;
+		background: none;
+		font-size: 0.675rem;
+		letter-spacing: 1px;
+		text-transform: uppercase;
+		color: $secondaryColorLight;
+		opacity: 0.4;
+		cursor: pointer;
+		@include basicTransition;
+
+		&:hover {
+			cursor: pointer;
+			opacity: 1;
+		}
+	}
+}
+
+
 .current-weather {
 	width: 100%;
 	margin-top: 2rem;

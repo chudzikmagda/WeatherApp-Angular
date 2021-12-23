@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Errors } from '../interfaces/errors';
 
 @Injectable({
 	providedIn: 'root'
@@ -6,18 +7,19 @@ import { Injectable } from '@angular/core';
 
 export class ShowErrorsService {
 
-	error = '';
+	error: string = '';
 
-	errorMessages = {
+	errorMessages: Errors = {
 		emptyInput: 'Podaj nazwę miejscowości i wyszukaj.',
 		noData: 'Niestety tej miejscowości nie znaleziono, wpisz inną i wyszukaj ponownie.',
-		serverErr: 'Przepraszamy, coś poszło nie tak. Spróbuj wyszukać ponownie'
+		serverErr: 'Przepraszamy, coś poszło nie tak. Spróbuj wyszukać ponownie',
+		geolocationErr: 'Przepraszamy, ale Twoja przglądarka nie obsługuje geolokalizacji, wpisz nazwę miejscowości i wyszukaj ponownie',
+		default: 'Przepraszamy, wystąpił jakiś błąd. Spróbuj ponownie.'
 	};
 
 	problemCode: string = '';
 
-	showError = (problemCode: string): any => {
-
+	showError = (problemCode: string): string => {
 		switch (problemCode) {
 			case 'emptyInput':
 				return this.error = this.errorMessages.emptyInput;
@@ -31,7 +33,12 @@ export class ShowErrorsService {
 				return this.error = this.errorMessages.noData;
 				break;
 
+			case 'noGeo':
+				return this.error = this.errorMessages.geolocationErr;
+				break;
+
 			default:
+				return this.error = this.errorMessages.default;
 				break;
 		}
 	}

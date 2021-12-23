@@ -45,5 +45,5 @@ interface DataValues {
 
 export interface CurrentWeatherAPI {
 	count?: number;
-	data?: Array<DataValues>
+	data?: any
 }
