@@ -151,7 +151,7 @@ export class WeatherComponent implements OnDestroy {
 		} else return this.showData();
 	}
 
-	ngOnDestroy(): void {
+	ngOnDestroy = (): void => {
 		this.currentWeatherSubscription.unsubscribe();
 		this.forecastSubscription.unsubscribe();
 	}
