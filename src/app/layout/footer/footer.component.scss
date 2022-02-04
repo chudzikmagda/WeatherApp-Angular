@@ -21,7 +21,6 @@
 		font-weight: $fontBold;
 
 		&-link {
-
 			&:link,
 			&:visited {
 				color: $secondaryColorDark;
@@ -31,7 +30,7 @@
 
 			&:hover,
 			&:focus {
-				color: $primaryColor
+				color: $primaryColor;
 			}
 		}
 	}

@@ -1,7 +1,7 @@
 interface weatherDescription {
 	icon?: string;
 	code?: number;
-	description?: string
+	description?: string;
 }
 
 export interface ForecastWeatherAPI {

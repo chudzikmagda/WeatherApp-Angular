@@ -1,7 +1,7 @@
 interface WeatherDescription {
 	icon?: string;
 	code?: number;
-	description?: string
+	description?: string;
 }
 
 interface DataValues {
@@ -36,7 +36,7 @@ interface DataValues {
 	ts?: number;
 	uv?: number;
 	vis?: number;
-	weather?: WeatherDescription,
+	weather?: WeatherDescription;
 	wind_cdir?: string;
 	wind_cdir_full?: string;
 	wind_dir?: number;
@@ -45,5 +45,5 @@ interface DataValues {
 
 export interface CurrentWeatherAPI {
 	count?: number;
-	data?: any
+	data?: any;
 }

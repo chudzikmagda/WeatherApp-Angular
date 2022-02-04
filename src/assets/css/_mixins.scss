@@ -1,4 +1,9 @@
-@mixin flex($flexDirection:column, $justifyContent:center, $alignItems:center, $flexWrap:nowrap) {
+@mixin flex(
+	$flexDirection: column,
+	$justifyContent: center,
+	$alignItems: center,
+	$flexWrap: nowrap
+) {
 	display: flex;
 	flex-direction: $flexDirection;
 	justify-content: $justifyContent;
@@ -6,10 +11,9 @@
 	flex-wrap: $flexWrap;
 }
 
-@mixin basicTransition($element:all, $time:0.5s) {
+@mixin basicTransition($element: all, $time: 0.5s) {
 	transition: $element $time ease-out;
 }
-
 
 //media queries
 
