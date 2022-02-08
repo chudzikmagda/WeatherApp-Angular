@@ -20,7 +20,7 @@
 				"build": {
 					"builder": "@angular-devkit/build-angular:browser",
 					"options": {
-						"outputPath": "dist/twojapogoda",
+						"outputPath": "dist",
 						"index": "src/index.html",
 						"main": "src/main.ts",
 						"polyfills": "src/polyfills.ts",
@@ -32,6 +32,7 @@
 					},
 					"configurations": {
 						"production": {
+							"baseHref": "./",
 							"budgets": [
 								{
 									"type": "initial",
@@ -40,8 +41,8 @@
 								},
 								{
 									"type": "anyComponentStyle",
-									"maximumWarning": "2kb",
-									"maximumError": "4kb"
+									"maximumWarning": "10kb",
+									"maximumError": "10kb"
 								}
 							],
 							"fileReplacements": [

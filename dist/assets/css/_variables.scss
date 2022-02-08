@@ -1,0 +1,30 @@
+//colors
+$primaryColor: rgba(238, 118, 116, 1);
+$secondaryColorDark: rgba(51, 65, 99, 1);
+$secondaryColorLight: rgba(221, 226, 238, 1);
+$white: rgba(250, 249, 249, 1);
+$black: rgba(0, 0, 0, 0.2);
+$greyLight: rgba(245, 245, 245, 1);
+$greyMedium: rgba(239, 239, 239, 1);
+$danger: #b53230;
+
+// typography
+$fontFamilyBasic: 'Roboto', sans-serif;
+$fontSizeBasic: 1rem;
+$fontBold: 600;
+
+//menu
+$navHeightDesktop: 5rem;
+$navHeightMobile: 3.5rem;
+
+//form
+$inputHeight: 3rem;
+
+//media queries breakpoints
+$smallMobile: 375px;
+$mobile: 768px;
+$desktop: 1024px;
+$largeDesktop: 1920px;
+
+//
+$gap: 2rem;

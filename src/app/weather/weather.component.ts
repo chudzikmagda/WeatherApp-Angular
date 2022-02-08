@@ -33,7 +33,7 @@ export class WeatherComponent implements OnDestroy {
 		icon: '',
 	};
 	forecastWeather: any = [];
-	iconsURL = '../../assets/images/icons/';
+	iconsURL = 'assets/images/icons/';
 	sectionWithDataClass: string = 'section section--weather section--hidden';
 	errorShowClass: string = '';
 	error: string = '';
