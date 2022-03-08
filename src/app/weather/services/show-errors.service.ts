@@ -17,7 +17,7 @@ export class ShowErrorsService {
 		default: 'Przepraszamy, wystąpił jakiś błąd. Spróbuj ponownie.',
 	};
 
-	problemCode: string = '';
+	problemCode!: string;
 
 	showError = (problemCode: string): string => {
 		switch (problemCode) {

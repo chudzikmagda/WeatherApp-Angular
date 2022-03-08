@@ -9,7 +9,7 @@ import { GetWeatherData } from './services/get-weather-data.service';
 import { Location } from './interfaces/location';
 import { ShowErrorsService } from './services/show-errors.service';
 import { ViewportScroller } from '@angular/common';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-weather',
@@ -19,7 +19,7 @@ import { Subscription } from 'rxjs';
 })
 export class WeatherComponent implements OnDestroy {
 	location: Location = {};
-	target: string = '';
+	target!: string;
 	currentWeather: CurrentWeatherData = {
 		sunrise: '',
 		sunset: '',
@@ -32,13 +32,12 @@ export class WeatherComponent implements OnDestroy {
 		perceivedTempreture: 0,
 		icon: '',
 	};
-	forecastWeather: any = [];
+	forecastWeather: any = {};
 	iconsURL = 'assets/images/icons/';
 	sectionWithDataClass: string = 'section section--weather section--hidden';
-	errorShowClass: string = '';
-	error: string = '';
-	currentWeatherSubscription: Subscription = new Subscription();
-	forecastSubscription: Subscription = new Subscription();
+	errorShowClass!: string;
+	error!: string;
+	dataSubscription: Subscription = new Subscription();
 
 	constructor(
 		private data: GetWeatherData,
@@ -55,58 +54,6 @@ export class WeatherComponent implements OnDestroy {
 			this.errorShowClass = 'form__message';
 			this.error = this.errors.showError('serverErr');
 		}
-	}
-
-	showCurrentWeather(): Promise<boolean> {
-		return new Promise<boolean>((resolve, reject) => {
-			this.currentWeatherSubscription = this.data
-				.getCurrentWeatherData(this.location, this.target)
-				.subscribe({
-					next: (response) => {
-						if (response) {
-							const data = response.data[0];
-							this.errorShowClass = '';
-							this.error = '';
-							this.currentWeather.sunrise = data.sunrise;
-							this.currentWeather.sunset = data.sunset;
-							this.currentWeather.description = data.weather.description;
-							this.currentWeather.pressure = data.pres;
-							this.currentWeather.humidity = data.rh;
-							this.currentWeather.windSpeed = data.wind_spd;
-							this.currentWeather.visibility = data.vis;
-							this.currentWeather.tempreture = data.temp;
-							this.currentWeather.perceivedTempreture = data.app_temp;
-							this.currentWeather.icon = `${this.iconsURL}${data.weather.icon}.svg`;
-							resolve(true);
-						} else if (!response) {
-							this.errorShowClass = 'form__message';
-							this.error = this.errors.showError('noData');
-						}
-					},
-					error: () => this.showErrorMsgBox(),
-				});
-		});
-	}
-
-	showForecastWeather(): Promise<boolean> {
-		return new Promise<boolean>((resolve, reject) => {
-			this.forecastSubscription = this.data
-				.getForecastWeatherData(this.location, this.target)
-				.subscribe({
-					next: (response) => {
-						if (response) {
-							this.errorShowClass = '';
-							this.error = '';
-							this.forecastWeather = response;
-							resolve(true);
-						} else if (!response) {
-							this.errorShowClass = 'form__message';
-							this.error = this.errors.showError('noData');
-						}
-					},
-					error: () => this.showErrorMsgBox(),
-				});
-		});
 	}
 
 	scrollToTop(): void {
@@ -133,16 +80,43 @@ export class WeatherComponent implements OnDestroy {
 		return (this.location = await this.getPosition());
 	}
 
-	async showData(): Promise<void> {
-		await this.showCurrentWeather(),
-			await this.showForecastWeather()
-				.then(() => {
+	showData(): void {
+		this.dataSubscription = forkJoin({
+			current: this.data.getCurrentWeatherData(this.location, this.target),
+			forecast: this.data.getForecastWeatherData(this.location, this.target),
+		}).subscribe({
+			next: (response) => {
+				if (response) {
+					this.errorShowClass = '';
+					this.error = '';
+					const data = response.current.data[0];
+					this.currentWeather.sunrise = data.sunrise;
+					this.currentWeather.sunset = data.sunset;
+					this.currentWeather.description = data.weather.description;
+					this.currentWeather.pressure = data.pres;
+					this.currentWeather.humidity = data.rh;
+					this.currentWeather.windSpeed = data.wind_spd;
+					this.currentWeather.visibility = data.vis;
+					this.currentWeather.tempreture = data.temp;
+					this.currentWeather.perceivedTempreture = data.app_temp;
+					this.currentWeather.icon = `${this.iconsURL}${data.weather.icon}.svg`;
+					this.forecastWeather = response.forecast;
+				} else if (!response) {
+					this.errorShowClass = 'form__message';
+					this.error = this.errors.showError('noData');
+				}
+			},
+			error: () => {
+				this.showErrorMsgBox();
+			},
+			complete: () => {
+				if (this.location.city || this.target === 'geolocation') {
 					this.sectionWithDataClass = 'section section--weather';
-				})
-				.then(() => {
 					this.ref.detectChanges();
 					this.scroll.scrollToAnchor('currentWeatherSection');
-				});
+				}
+			},
+		});
 	}
 
 	async startApp(target: string): Promise<void> {
@@ -155,7 +129,6 @@ export class WeatherComponent implements OnDestroy {
 	}
 
 	ngOnDestroy = (): void => {
-		this.currentWeatherSubscription.unsubscribe();
-		this.forecastSubscription.unsubscribe();
+		this.dataSubscription.unsubscribe();
 	};
 }
