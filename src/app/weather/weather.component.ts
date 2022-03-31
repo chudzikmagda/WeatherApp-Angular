@@ -10,6 +10,7 @@ import { Location } from './interfaces/location';
 import { ShowErrorsService } from './services/show-errors.service';
 import { ViewportScroller } from '@angular/common';
 import { forkJoin, Subscription } from 'rxjs';
+import { PreloaderService } from '../components/preloader/services/preloader.service';
 
 @Component({
 	selector: 'app-weather',
@@ -43,7 +44,8 @@ export class WeatherComponent implements OnDestroy {
 		private data: GetWeatherData,
 		private errors: ShowErrorsService,
 		private scroll: ViewportScroller,
-		private ref: ChangeDetectorRef
+		private ref: ChangeDetectorRef,
+		public preloaderService: PreloaderService
 	) {}
 
 	showErrorMsgBox(): void {
@@ -107,10 +109,12 @@ export class WeatherComponent implements OnDestroy {
 				}
 			},
 			error: () => {
+				this.preloaderService.isLoading.next(false);
 				this.showErrorMsgBox();
 			},
 			complete: () => {
 				if (this.location.city || this.target === 'geolocation') {
+					this.preloaderService.isLoading.next(false);
 					this.sectionWithDataClass = 'section section--weather';
 					this.ref.detectChanges();
 					this.scroll.scrollToAnchor('currentWeatherSection');
