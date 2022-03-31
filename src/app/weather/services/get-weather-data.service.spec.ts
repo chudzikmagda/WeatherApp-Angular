@@ -7,8 +7,8 @@ import { CurrentWeatherAPI } from '../interfaces/current-weather-api';
 import { GetWeatherData } from './get-weather-data.service';
 import { currrentWeatherDataGeoMock } from './services-tests-mocks/current-weather-geoloaction';
 import { currrentWeatherDataCityMock } from './services-tests-mocks/current-weather-city-name';
-import { forecastDataCityMock } from './services-tests-mocks/forecast-geoloaction-city-name';
 import { forecastDataGeoMock } from './services-tests-mocks/forecast-geoloaction';
+import { forecastDataCityMock } from './services-tests-mocks/forecast-geoloaction-city-name';
 
 describe('GetWeatherDataService', () => {
 	let service: GetWeatherData;

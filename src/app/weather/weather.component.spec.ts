@@ -11,6 +11,8 @@ import {
 } from '@angular/common/http/testing';
 import { GetWeatherData } from './services/get-weather-data.service';
 import { DebugElement } from '@angular/core';
+import { currrentWeatherDataCityMock } from './services/services-tests-mocks/current-weather-city-name';
+import { forecastDataCityMock } from './services/services-tests-mocks/forecast-geoloaction-city-name';
 
 describe('WeatherComponent', () => {
 	let component: WeatherComponent;
@@ -18,34 +20,31 @@ describe('WeatherComponent', () => {
 	let element: DebugElement;
 	let httpController: HttpTestingController;
 	let service: GetWeatherData;
-	const location = {
-		city: 'Kraków',
-		latitude: 50.06143,
-		longitude: 19.93658,
+	const responseMock = {
+		current: currrentWeatherDataCityMock,
+		forecast: forecastDataCityMock,
 	};
 
-	beforeEach(
-		waitForAsync(() => {
-			const serviceSpy = jasmine.createSpyObj('GetWeatherData', [
-				'getForecastWeatherData',
-			]);
+	beforeEach(waitForAsync(() => {
+		const serviceSpy = jasmine.createSpyObj('GetWeatherData', [
+			'getForecastWeatherData',
+		]);
 
-			TestBed.configureTestingModule({
-				declarations: [WeatherComponent],
-				imports: [HttpClientTestingModule],
-				providers: [GetWeatherData],
-			})
-				.compileComponents()
-				.then(() => {
-					fixture = TestBed.createComponent(WeatherComponent);
-					component = fixture.componentInstance;
-					element = fixture.debugElement;
-				});
-
-			service = TestBed.inject(GetWeatherData);
-			httpController = TestBed.inject(HttpTestingController);
+		TestBed.configureTestingModule({
+			declarations: [WeatherComponent],
+			imports: [HttpClientTestingModule],
+			providers: [{ provide: GetWeatherData, useValue: serviceSpy }],
 		})
-	);
+			.compileComponents()
+			.then(() => {
+				fixture = TestBed.createComponent(WeatherComponent);
+				component = fixture.componentInstance;
+				element = fixture.debugElement;
+			});
+
+		service = TestBed.inject(GetWeatherData);
+		httpController = TestBed.inject(HttpTestingController);
+	}));
 
 	it('should create WeatherComponent', () => {
 		expect(component).toBeTruthy();
@@ -90,7 +89,5 @@ describe('WeatherComponent', () => {
 		expect(heroImg['src']).toContain('hero-image.webp');
 	});
 
-	it('should render forecast and current weather', fakeAsync(() => {
-		pending();
-	}));
+	it('should render forecast and current weather', fakeAsync(() => {}));
 });
