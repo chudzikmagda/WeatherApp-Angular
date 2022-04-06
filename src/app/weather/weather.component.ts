@@ -105,7 +105,7 @@ export class WeatherComponent implements OnDestroy {
 					this.currentWeather.perceivedTempreture = data.app_temp;
 					this.currentWeather.icon = `${this.iconsURL}${data.weather.icon}.svg`;
 					this.forecastWeather = response.forecast;
-				} else if (!response) {
+				} else {
 					this.errorShowClass = 'form__message';
 					this.error = this.errors.showError('noData');
 				}
@@ -127,11 +127,18 @@ export class WeatherComponent implements OnDestroy {
 
 	async startApp(target: string): Promise<void> {
 		this.target = target;
-		if (target === 'geolocation') {
+		if (this.target === 'geolocation') {
 			return await this.getGeolocation().then(() => {
 				this.showData();
 			});
-		} else return this.showData();
+		} else if (this.target === 'inputBtn' || this.target === 'enter') {
+			if (this.location.city) {
+				return this.showData();
+			} else {
+				this.errorShowClass = 'form__message';
+				this.error = this.errors.showError('emptyInput');
+			}
+		}
 	}
 
 	ngOnDestroy = (): void => {
