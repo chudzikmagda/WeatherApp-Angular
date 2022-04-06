@@ -22,6 +22,7 @@ export class WeatherComponent implements OnDestroy {
 	location: Location = {};
 	target!: string;
 	currentWeather: CurrentWeatherData = {
+		city: '',
 		sunrise: '',
 		sunset: '',
 		description: '',
@@ -92,6 +93,7 @@ export class WeatherComponent implements OnDestroy {
 					this.errorShowClass = '';
 					this.error = '';
 					const data = response.current.data[0];
+					this.currentWeather.city = data.city_name;
 					this.currentWeather.sunrise = data.sunrise;
 					this.currentWeather.sunset = data.sunset;
 					this.currentWeather.description = data.weather.description;

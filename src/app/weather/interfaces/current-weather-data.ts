@@ -1,4 +1,5 @@
 export interface CurrentWeatherData {
+	city?: string;
 	sunrise?: string;
 	sunset?: string;
 	description?: string;

@@ -58,7 +58,7 @@
 	<div class="col col--weather">
 		<div class="city">
 			<ng-container *ngIf="target === 'inputBtn'">
-				<h2 class="city__name">{{ location.city | titlecase }}</h2>
+				<h2 class="city__name">{{ currentWeather?.city | titlecase }}</h2>
 			</ng-container>
 			<ng-container *ngIf="target === 'geolocation'">
 				<h2 class="city__name">
