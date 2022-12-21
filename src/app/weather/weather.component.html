@@ -55,10 +55,10 @@
 </section>
 
 <section [class]="sectionWithDataClass" id="currentWeatherSection">
-	<div class="col col--weather">
+	<div *ngIf="currentWeather" class="col col--weather">
 		<div class="city">
 			<ng-container *ngIf="target === 'inputBtn'">
-				<h2 class="city__name">{{ currentWeather?.city | titlecase }}</h2>
+				<h2 class="city__name">{{ currentWeather.city | titlecase }}</h2>
 			</ng-container>
 			<ng-container *ngIf="target === 'geolocation'">
 				<h2 class="city__name">
@@ -71,11 +71,11 @@
 				<ul class="sun__items">
 					<li class="sun__item">
 						Wschód słońca:
-						<time class="sun__sunrise">{{ currentWeather?.sunrise }}</time>
+						<time class="sun__sunrise">{{ currentWeather.sunrise }}</time>
 					</li>
 					<li class="sun__item">
 						Zachód słońca:
-						<time class="sun__sunset">{{ currentWeather?.sunset }}</time>
+						<time class="sun__sunset">{{ currentWeather.sunset }}</time>
 					</li>
 				</ul>
 			</div>
@@ -83,16 +83,12 @@
 		<h3 class="uppercase heading">Teraz</h3>
 		<div class="box">
 			<div class="col">
-				<img
-					[src]="currentWeather?.icon"
-					alt=""
-					class="current-weather__icon"
-				/>
+				<img [src]="currentWeather.icon" alt="" class="current-weather__icon" />
 				<span class="current-weather__name uppercase">{{
-					currentWeather?.description
+					currentWeather.description
 				}}</span>
 				<span class="current-weather__temp">
-					{{ currentWeather?.tempreture | number: '1.0-1' }} <sup> o</sup>C
+					{{ currentWeather.tempreture | number: '1.0-1' }} <sup> o</sup>C
 				</span>
 			</div>
 			<div class="col">
@@ -101,35 +97,35 @@
 						<li class="current-weather__item">
 							Temperatura odczuwalna:
 							<span class="current-weather__feels-like">{{
-								currentWeather?.perceivedTempreture | number: '1.0-1'
+								currentWeather.perceivedTempreture | number: '1.0-1'
 							}}</span
 							><sup> o</sup>C
 						</li>
 						<li class="current-weather__item">
 							Ciśnienie:
 							<span class="current-weather__pressure">{{
-								currentWeather?.pressure | number: '1.0-0'
+								currentWeather.pressure | number: '1.0-0'
 							}}</span>
 							hPa
 						</li>
 						<li class="current-weather__item">
 							Wilgotność powietrza:
 							<span class="current-weather__humidity">{{
-								currentWeather?.humidity | number: '1.0-1'
+								currentWeather.humidity | number: '1.0-1'
 							}}</span>
 							%
 						</li>
 						<li class="current-weather__item">
 							Widoczność:
 							<span class="current-weather__visibility">{{
-								currentWeather?.visibility | number: '1.0-1'
+								currentWeather.visibility | number: '1.0-1'
 							}}</span>
 							km
 						</li>
 						<li class="current-weather__item">
 							Wiatr:
 							<span class="current-weather__wind-speed">{{
-								currentWeather?.windSpeed | number: '1.0-1'
+								currentWeather.windSpeed | number: '1.0-1'
 							}}</span>
 							km/h
 						</li>
